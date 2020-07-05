@@ -111,11 +111,13 @@ def getpizza(id):
 
 @app.route('/getcardpizzas')
 def getcardpizzas():
-    cart =Cart.query.filter_by(user_id=current_user.id)
-    somme = 0
-    for pizza in cart:
-        somme = somme + pizza.quantity
-    return str(somme)
+    if current_user.is_authenticated:
+        cart =Cart.query.filter_by(user_id=current_user.id)
+        somme = 0
+        for pizza in cart:
+            somme = somme + pizza.quantity
+        return str(somme)
+    return 'nothing'
 
 @app.route('/clearall/<user_id>')
 def clearall(user_id):
