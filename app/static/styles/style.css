@@ -1,0 +1,42 @@
+/* CSS Document */
+body{padding:0px; margin:0px; background:#fff; color:#616161; font:10px/14px Tahoma, sans-serif;}
+
+#container{width:775px;position:relative; margin:0 auto;background:url('/static/images/b_main.jpg')0 0 no-repeat; padding-top:43px; position: relative;}
+
+#incontainer{width:617px; position:relative; margin:0 auto; background:#fff; }
+
+
+
+#header{width:617px; height:345px; background: url('/static/images/b_header.jpg') 0 0 no-repeat; position:relative;}
+
+
+/* content */
+
+#horiz{width:617px; height: 40; position:relative; background-color: rgb(70, 230, 21)}
+#l1{width:205px; position: absolute}
+#l2{margin-left:205px;width:205px; position: absolute}
+#l3{margin-left:410px;width:207px; position: absolute}
+#l4{margin-left:205px;width:102px; position: absolute}
+#l5{margin-left:307px;width:103px; position: absolute}
+#content{width:617px; position:relative}
+
+#leftPan{width:190px; float:left; margin:17px 26px 0 17px; display:inline}
+#rightPan{width:346px; float:left; margin:17px 0 0 0;}
+
+#welcome h2{height:45px; position:relative; background:url('/static/images/h_welcome.gif') 0 0 no-repeat; margin-bottom:5px}
+#welcome p{margin-left:8px; margin-bottom:15px}
+
+.specialItem{width:340px; margin:0 0 16px 5px}
+.specialItem img{float:left; margin-right:14px}
+.specialItem p{float:left; width:250px}
+
+.clear#end{height:20px}
+
+
+/* footer */
+
+
+#footer{height:59px; clear:both; width:617px; border-top: #cccccc 1px solid}
+#footer p{padding: 15px 0 0 0; font:10px/16px Tahoma, sans-serif; font-weight:normal; text-align:center; color:#000;}
+#footer p a{font:10px/16px Tahoma, sans-serif; font-weight:normal; color:#000; text-decoration:none; padding: 0 3px }
+#footer p a:hover{text-decoration:underline; color:#000}

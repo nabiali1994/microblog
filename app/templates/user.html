@@ -1,0 +1,81 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" href='/static/styles/style.css'/>
+{% block content %}
+
+<style>
+    #left {margin-left: 20px; float: left;width: 51%;overflow: hidden;}
+    #right {overflow: hidden;}
+</style>
+
+
+<body>
+    <div id="container">
+        <div id="incontainer">
+        <div id="content">
+            <div id="horiz"> 
+                <a  href="{{ url_for('index') }}" id=l1><center><h2>Home</h2></center></a>
+                {% if not current_user.is_anonymous %}
+                <a  href="{{ url_for('user', username=current_user.username) }}" id=l4><center><h2>{{ current_user.username }}</h2></center></a>
+				<a  href="{{ url_for('logout') }}" id=l5><center><h2>Log out</h2></center></a>
+				<a  href="{{ url_for('cart') }}"id=l3><center><h2>Cart (<b id="num1"></b>)</h2></center></a> 
+                {% else %}
+                <a  href="{{ url_for('login') }}" id=l2><center><h2>Login</h2></center></a>
+				<a  href="{{ url_for('cart') }}"id=l3><center><h2>Cart (<b id="num"></b>)</h2></center></a> 
+				{% endif %}
+				
+            </div>
+			  
+            
+            <h3><center>Your last commands</center></h3>
+
+            {% for current_command in commands %}
+            <div id="left">
+                <h3>
+
+                Command date:
+                {{current_command.timestamp}}  
+                <a href="#"style= "color: red;"onclick="func({{current_command.id}})">Show order</a>
+                </h3>
+            </div>
+            {% endfor %}
+            <div id="right"></div>
+
+
+
+              
+              <div class="clear" id="end"></div>
+            </div>
+            <div id="footer">
+              <p><a href="/index">HOME PAGE</a> | <a href="/index">ABOUT US</a> | <a href="/index">OUR MENU</a> | <a href="/login">LOGIN</a> | <a href="/cart">CART!</a> | <a href="/index">CONTACTS</a><br/>
+           <!--     Copyright &copy; Your Company Name | Design by <a href="http://freshtemplates.com/">Website Templates</a></p>-->
+            </div>
+          </div>
+        </div>
+        </body>
+{% endblock %}
+
+<script>
+		$.get( "../getcardpizzas",function( data ) {
+			document.getElementById("num1").innerHTML = data;
+		});
+		
+</script>
+
+<script>
+		function func(id){
+            $.get( "../getorderpizzas/"+id,function( data ) {
+               obj = JSON.parse(data);
+               text = '<table>'
+              for (i = 0; i < obj.length; i++) { 
+                text = text + '<tr><td>'+obj[i].item.title+ '</td><td>'+obj[i].item.quantity+'</td></tr>'
+                
+                //alert(obj[i].item.title)
+                //alert( obj[i].item.quantity)
+              }
+              text += '</table>'
+              document.getElementById("right").innerHTML = text;
+               
+		    });
+        }
+		
+</script>

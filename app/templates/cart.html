@@ -1,0 +1,169 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+
+//delete an existing key=>value from the HTML5 storage
+function RemoveItem(item) {
+    localStorage.removeItem(item);
+    location.reload();
+}
+
+function RemoveItem1(item) {
+	$.get( "clearitem/"+item,function( data ) {
+		location.reload();
+		});
+		
+    
+}
+
+function show(){
+	if (window.localStorage.length>0){
+    var key = "";
+	var list = "<tr><th>Item</th><th>Quantity</th><th>Unit Price(Euro)</th><th>Price(Euro)</th><th>Price(Dollar)</th></tr>\n";
+	var i = 0;
+	var somme = 0;
+	jQuery.ajaxSetup({async:false});
+	//for more advance feature, you can set cap on max items in the cart
+	for (i = 0; i <= localStorage.length-1; i++) {
+        key = localStorage.key(i);
+		$.get( "getpizza/"+key,function( data ) {
+			obj = JSON.parse(data);
+			somme = somme + obj.price*localStorage.getItem(key)
+			list += "<tr><td>" + obj.title + "</td>\n<td>"+ localStorage.getItem(key) + '</td><td>'+obj.price+'</td><td>'+obj.price*localStorage.getItem(key)+'</td><td>'+(1.12*(obj.price*localStorage.getItem(key))).toFixed(2)+'</td><td><input type="button" value = "remove from list" onclick="RemoveItem(\'' + key + '\')"> </td></tr>\n';
+		});
+		}
+		document.getElementById('price').innerHTML = 5 + somme + document.getElementById('price').innerHTML ;
+		document.getElementById('price1').innerHTML = (5 + somme*1.12).toFixed(2) + document.getElementById('price1').innerHTML ;
+		//bind the data to html table
+		//you can use jQuery too....
+	document.getElementById('list').innerHTML = list;
+	}
+
+}
+//restart the local storage
+function ClearAll() {
+    localStorage.clear();
+    location.reload();
+}
+
+
+function ClearAllConnected(user) {
+	$.get( "clearall/"+user,function( data ) {
+		location.reload();
+		});
+		
+}
+
+
+
+</script>
+
+
+
+<link rel="stylesheet" href='/static/styles/style.css'/>
+{% block content %}
+
+
+<body>
+    <div id="container">
+        <div id="incontainer">
+        <div id="content">
+            <div id="horiz"> 
+                <a  href="{{ url_for('index') }}" id=l1><center><h2>Home</h2></center></a>
+                {% if not current_user.is_anonymous %}
+                <a  href="{{ url_for('user', username=current_user.username) }}" id=l4><center><h2>{{ current_user.username }}</h2></center></a>
+				<a  href="{{ url_for('logout') }}" id=l5><center><h2>Log out</h2></center></a>
+				<a  href="{{ url_for('cart') }}"id=l3><center><h2>Cart (<b id="num1"></b>)</h2></center></a> 
+                {% else %}
+                <a  href="{{ url_for('login') }}" id=l2><center><h2>Login</h2></center></a>
+				<a  href="{{ url_for('cart') }}"id=l3><center><h2>Cart (<b id="num"></b>)</h2></center></a> 
+				{% endif %}
+				
+            </div>
+			  
+			{% if current_user.is_anonymous %}
+			<body onload="show()">
+					&nbsp;&nbsp;
+					<center><table border="1" id=list></table></center>
+					&nbsp;&nbsp;
+
+					<p>
+					<center><label><input type=button value="Clear" onclick="ClearAll()">
+					<i>* Delete all items</i></label>
+					</center>
+					</p>
+					&nbsp;&nbsp;
+					<center><table>
+							<tr><td>Delivery costs:</td><td><b>5 Euro</b></td></tr>
+						<tr><td>Price to pay:</td><td><b id="price"> Euro</b></td></tr>
+						<tr><td></td><td><b id="price1"> Dollar</b> </td></tr>
+						 <tr><td></td><td> <input type="button" value="Pay" onclick="parent.location='fin'"> </h1>  </td></tr>
+				 </table></center>
+				</body>
+				{% else %}
+
+				&nbsp;&nbsp;
+
+
+					{% if cart[0] %}
+					<center><table border="1">
+							<tr><th>Item</th><th>Quantity</th><th>Unit Price(Euro)</th><th>Price(Euro)</th><th>Price(Dollar)</th></tr>
+							{% for current_pizza in cart %}
+
+							<tr>  <td>{{current_pizza.pizza_title}}</td>  <td>{{current_pizza.quantity}}</td>  <td>{{current_pizza.pizza_price}}</td>  <td>{{current_pizza.pizza_price*current_pizza.quantity}} </td>   <td>{{current_pizza.pizza_price*1.12*current_pizza.quantity}}</td>  <td> <input type="button" value = "remove from list" onclick="RemoveItem1({{current_pizza.id}})">    </td>    </tr>
+
+
+
+							{% endfor %}
+
+					</table></center>
+		
+
+
+					&nbsp;&nbsp;
+
+					<p>
+						<center><label><input type=button value="Clear" onclick="ClearAllConnected({{current_user.id}})">
+						<i>* Delete all items</i></label>
+						</center>
+						</p>
+						<center><table>
+							<tr><td>Delivery costs:</td><td><b>5 Euro</b></td></tr>
+						<tr><td>Price to pay:</td><td><b> {{price}} Euro</b></td></tr>
+						<tr><td></td><td><b id=""> {{price1}} Dollar</b> </td></tr>
+						 <tr><td></td><td> <input type="button" value="Pay" onclick="parent.location='fin'"> </h1>  </td></tr>
+				 </table></center>
+
+				 {%else%}
+						 <center><h2>The cart is empty!</h2></center>
+						 
+				{% endif %}
+				{% endif %}
+
+
+              
+              <div class="clear" id="end"></div>
+            </div>
+            <div id="footer">
+              <p><a href="/index">HOME PAGE</a> | <a href="/index">ABOUT US</a> | <a href="/index">OUR MENU</a> | <a href="/login">LOGIN</a> | <a href="#">CART!</a> | <a href="/index">CONTACTS</a><br/>
+           <!--     Copyright &copy; Your Company Name | Design by <a href="http://freshtemplates.com/">Website Templates</a></p>-->
+            </div>
+          </div>
+        </div>
+        </body>
+{% endblock %}
+
+<script>
+		var x=0;
+		for (i = 0; i <= localStorage.length-1; i++) {
+			key = localStorage.key(i);
+			x = x + parseInt(localStorage.getItem(key));
+		}
+		document.getElementById("num").innerHTML = x;
+	</script>
+<script>
+		$.get( "getcardpizzas",function( data ) {
+			document.getElementById("num1").innerHTML = data;
+		});
+		
+</script>

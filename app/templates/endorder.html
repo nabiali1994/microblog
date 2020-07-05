@@ -1,0 +1,58 @@
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" href='/static/styles/style.css'/>
+{% block content %}
+
+
+<body>
+    <div id="container">
+        <div id="incontainer">
+        <div id="content">
+            <div id="horiz"> 
+                <a  href="{{ url_for('index') }}" id=l1><center><h2>Home</h2></center></a>
+                {% if not current_user.is_anonymous %}
+                <a  href="{{ url_for('user', username=current_user.username) }}" id=l4><center><h2>{{ current_user.username }}</h2></center></a>
+				<a  href="{{ url_for('logout') }}" id=l5><center><h2>Log out</h2></center></a>
+				<a  href="{{ url_for('cart') }}"id=l3><center><h2>Cart (<b id="num1"></b>)</h2></center></a> 
+                {% else %}
+                <a  href="{{ url_for('login') }}" id=l2><center><h2>Login</h2></center></a>
+				<a  href="{{ url_for('cart') }}"id=l3><center><h2>Cart (<b id="num"></b>)</h2></center></a> 
+				{% endif %}
+				
+            </div>
+             &nbsp;&nbsp;
+             <p>
+                &nbsp;&nbsp;
+             </p>
+            <center>
+            <h3>Congratualtions! Your order is passed</h3><h3>We will call you once we are in face of your house! Maximum: 20 minutes</h3>
+        </center>
+
+
+              <div class="clear" id="end"></div>
+            </div>
+            <div id="footer">
+              <p><a href="/index">HOME PAGE</a> | <a href="/index">ABOUT US</a> | <a href="/index">OUR MENU</a> | <a href="/login">LOGIN</a> | <a href="/cart">CART!</a> | <a href="/index">CONTACTS</a><br/>
+           <!--     Copyright &copy; Your Company Name | Design by <a href="http://freshtemplates.com/">Website Templates</a></p>-->
+            </div>
+          </div>
+        </div>
+        </body>
+{% endblock %}
+
+<script>
+        var x=0;
+        for (i = 0; i <= localStorage.length-1; i++) {
+            key = localStorage.key(i);
+            x = x + parseInt(localStorage.getItem(key));
+        }
+        document.getElementById("num").innerHTML = x;
+    </script>
+
+<script>
+    $.get( "../getcardpizzas",function( data ) {
+        document.getElementById("num1").innerHTML = data;
+    });
+    
+</script>
+
