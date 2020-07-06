@@ -2,7 +2,7 @@ from app import app
 from app.forms import LoginForm, OrderForm
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Post, Pizza, Cart, Pizza_ordered, Command
+from app.models import User, Pizza, Cart, Pizza_ordered, Command
 from app.forms import RegistrationForm
 from app import db
 from werkzeug.urls import url_parse
@@ -138,8 +138,6 @@ def getorderpizzas(order_id):
     i=0
     for prod in pizzas:
         current_pizza = Pizza.query.filter_by(id=prod.pizza_id).first_or_404()
-        print (current_pizza.title)
-        print (prod.quantity)
         x = {"item":{"title":current_pizza.title,"quantity":prod.quantity}}
         l.append(x)
         i=i+1
@@ -149,7 +147,6 @@ def getorderpizzas(order_id):
 
 @app.route('/savetocart/<user_id>/<pizza_id>')
 def savetocart(user_id, pizza_id):
-    print('here')
     pizza = Pizza.query.filter_by(id=pizza_id).first()
     cart_toupdate =Cart.query.filter_by(user_id=user_id, pizza_id=pizza_id).first()
     if cart_toupdate is None:

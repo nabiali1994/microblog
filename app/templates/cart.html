@@ -1,4 +1,4 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <script>
 
@@ -110,7 +110,7 @@ function ClearAllConnected(user) {
 							<tr><th>Item</th><th>Quantity</th><th>Unit Price(Euro)</th><th>Price(Euro)</th><th>Price(Dollar)</th></tr>
 							{% for current_pizza in cart %}
 
-							<tr>  <td>{{current_pizza.pizza_title}}</td>  <td>{{current_pizza.quantity}}</td>  <td>{{current_pizza.pizza_price}}</td>  <td>{{current_pizza.pizza_price*current_pizza.quantity}} </td>   <td>{{current_pizza.pizza_price*1.12*current_pizza.quantity}}</td>  <td> <input type="button" value = "remove from list" onclick="RemoveItem1({{current_pizza.id}})">    </td>    </tr>
+							<tr>  <td>{{current_pizza.pizza_title}}</td>  <td>{{current_pizza.quantity}}</td>  <td>{{current_pizza.pizza_price}}</td>  <td>{{ "%.2f"|format(current_pizza.pizza_price*current_pizza.quantity)}} </td>   <td>{{ "%.2f"|format(current_pizza.pizza_price*1.12*current_pizza.quantity)}}</td>  <td> <input type="button" value = "remove from list" onclick="RemoveItem1({{current_pizza.id}})">    </td>    </tr>
 
 
 
@@ -145,7 +145,7 @@ function ClearAllConnected(user) {
               <div class="clear" id="end"></div>
             </div>
             <div id="footer">
-              <p><a href="/index">HOME PAGE</a> | <a href="/index">ABOUT US</a> | <a href="/index">OUR MENU</a> | <a href="/login">LOGIN</a> | <a href="#">CART!</a> | <a href="/index">CONTACTS</a><br/>
+              <p><a href="/index">HOME PAGE</a> | <a href="/index">ABOUT US</a> | <a href="/index">OUR MENU</a> | {% if current_user.is_anonymous %}<a href="/login">LOGIN</a>{% else %}<a href="/logout">LOGOUT</a>{% endif %} | <a href="#">CART!</a> | <a href="/index">CONTACTS</a><br/>
            <!--     Copyright &copy; Your Company Name | Design by <a href="http://freshtemplates.com/">Website Templates</a></p>-->
             </div>
           </div>

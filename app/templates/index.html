@@ -1,5 +1,5 @@
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
   
 
@@ -76,7 +76,7 @@ function SaveItem_user(x,y) {
               <div class="clear" id="end"></div>
             </div>
             <div id="footer">
-              <p><a href="#">HOME PAGE</a> | <a href="#">ABOUT US</a> | <a href="#">OUR MENU</a> | <a href="/login">LOGIN</a> | <a href="/cart">CART!</a> | <a href="#">CONTACTS</a><br/>
+              <p><a href="#">HOME PAGE</a> | <a href="#">ABOUT US</a> | <a href="#">OUR MENU</a> | {% if current_user.is_anonymous %}<a href="/login">LOGIN</a>{% else %}<a href="/logout">LOGOUT</a>{% endif %} | <a href="/cart">CART!</a> | <a href="#">CONTACTS</a><br/>
            <!--     Copyright &copy; Your Company Name | Design by <a href="http://freshtemplates.com/">Website Templates</a></p>-->
             </div>
           </div>
