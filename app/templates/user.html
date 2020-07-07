@@ -3,8 +3,9 @@
 {% block content %}
 
 <style>
-    #left {margin-left: 20px; float: left;width: 51%;overflow: hidden;}
-    #right {overflow: hidden;}
+    .float-container {border: 3px solid black;padding: 20px;margin-left: 20px; margin-right:20px;margin-bottom: 20px; font-size:15px}
+    .one {width: 40%;float: left;}
+    .two {margin-left: 15%;}
 </style>
 
 
@@ -27,24 +28,32 @@
 			  
             
             <h3><center>Your last commands</center></h3>
+            
+            
+            {% for current_command in elements%}
+          <div class="float-container">
+                <div class="one">
+                Command day:
+                {{current_command['time'].strftime('%Y-%m-%d')}} <br><br>
+                Command time:
+                {{current_command['time'].strftime('%H:%M')}}   
+                </div>
 
-            {% for current_command in commands %}
-            <div id="left">
-                <h3>
+                <div class="two">
+                <table border="1">
+                <tr><th>Pizza </th><th>Price</th></tr>
+                {% for current_elt in current_command['elements']%}
+                <tr> 
+                  <td>  {{current_elt['title']}}</td><td> {{current_elt['price']}} </td>
+                </tr>
+                {% endfor %}
+                </table>
+                </div>
 
-                Command date:
-                {{current_command.timestamp}}  
-                <a href="#"style= "color: red;"onclick="func({{current_command.id}})">Show order</a>
-                </h3>
-            </div>
+          </div>
             {% endfor %}
-            <div id="right"></div>
 
-
-
-              
-              <div class="clear" id="end"></div>
-            </div>
+  
             <div id="footer">
               <p><a href="/index">HOME PAGE</a> | <a href="/index">ABOUT US</a> | <a href="/index">OUR MENU</a> | {% if current_user.is_anonymous %}<a href="/logout">LOGOUT</a>{% else %}<a href="/logout">LOGOUT</a>{% endif %}| <a href="/cart">CART!</a> | <a href="/index">CONTACTS</a><br/>
            <!--     Copyright &copy; Your Company Name | Design by <a href="http://freshtemplates.com/">Website Templates</a></p>-->

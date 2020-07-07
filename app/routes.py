@@ -55,7 +55,18 @@ def register():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     commands = Command.query.filter_by(user_id=user.id).all()
-    return render_template('user.html', commands=commands)
+    test_json = []
+    for command in commands:
+        pizzas = Pizza_ordered.query.filter_by(command_id=command.id).all()
+        test1 = []
+        for pizza in  pizzas:
+            current_pizza = Pizza.query.filter_by(id=pizza.pizza_id).first_or_404()
+            test1.append({'title':current_pizza.title,'price':current_pizza.price})
+        test = {}
+        test['time'] =  command.timestamp
+        test['elements'] =  test1
+        test_json.append(test)
+    return render_template('user.html', commands=commands, elements= test_json)
 
 
 @app.route('/logout')
